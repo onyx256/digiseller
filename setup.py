@@ -11,8 +11,19 @@ setup(
     version='0.0.1',
     author='slava256',
     author_email='sv2021e@gmail.com',
-    description='',
+    description='Digiseller API wrapper',
     long_description=readme(),
     long_description_content_type='text/markdown',
-    url=''
+    url='https://github.com/onyx256/digiseller',
+    install_requires=['requests>=2.32.3'],
+    classifiers=[
+        'Programming Language :: Python :: 3.11',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent'
+    ],
+    keywords='digiseller',
+    project_urls={
+        'GitHub': 'https://github.com/onyx256/digiseller'
+    },
+    python_requires='>=3.11'
 )
