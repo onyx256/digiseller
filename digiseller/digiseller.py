@@ -33,6 +33,7 @@ class Digiseller:
         self.token: str | None = None
         self.token_expiration: int = 0
 
+        self.operations: api.Operations = api.Operations(self)
         self.statistics: api.Statistics = api.Statistics(self)
 
     def __get_and_set_token(self) -> str:
@@ -60,6 +61,7 @@ class Digiseller:
         params = {}
         json_data = {}
 
+        options = {k: v for k, v in options.items() if v is not None}  # Убираем все параметры None
         if method.upper() in ['GET']:
             options['token'] = self.token
             params = options

@@ -56,7 +56,7 @@ class Statistics:
                   date_start: datetime = datetime(2000, 1, 1, 0, 0, 0),
                   date_finish: datetime = datetime.now(),
                   returned: int = 0,
-                  page: int = 0,
+                  page: int = 1,
                   rows: int = 10) -> List[Sale]:
         """
         Получение подробной статистики по продажам.
