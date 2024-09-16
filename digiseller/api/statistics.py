@@ -47,7 +47,7 @@ class Statistics:
 
         data = resp.json()
         last_sales_raw = data['sales']
-        sales = [Sale.from_dict(last_sale_raw) for last_sale_raw in last_sales_raw]
+        sales = [Sale.from_dict(last_sale_raw['product']) for last_sale_raw in last_sales_raw]
 
         return sales
 

@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 
 def readme() -> str:
-    with open('README.md', 'r') as f:
+    with open('README.md', 'r', encoding='utf-8') as f:
         return f.read()
 
 
 setup(
     name='digiseller',
-    version='0.0.2',
+    version='0.0.3',
     author='slava256',
     author_email='sv2021e@gmail.com',
     description='Digiseller API wrapper',
