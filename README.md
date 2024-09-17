@@ -1,8 +1,8 @@
 # Digiseller
 
-Неофициальная Python библиотека для удобного использования Digiseller API. Пока что в разработке, представлено небольшое количество методов и нет обработки исключений. Буду рад любой помощи в разработке.
+Неофициальная библиотека - Digiseller API wrapper для Python. Простой и удобный способ взаимодействовать с АПИ сервиса.
 
-Многое нагло беру от другого проекта - https://github.com/Ernieleo/Digiseller-API-Python от Ernieleo. Надеюсь никого не обижаю, делаю для себя.
+[![Загрузки](https://img.shields.io/pypi/dm/digiseller.svg)](https://pypistats.org/packages/digiseller)
 
 ## Установка
 
