@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
+from typing import Optional, List
 
 
 class Currency(Enum):
@@ -33,19 +34,56 @@ class AllowType(Enum):
     ONLY = 'only'
 
 
+class Operation:
+    """
+    Представляет информацию об операции
+    https://my.digiseller.com/inside/api_account.asp
+    """
+
+    def __init__(self, **kwargs) -> None:
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def __repr__(self) -> str:
+        return f'<{self.__class__.__name__} {self.__dict__}>'
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Operation':
+        return cls(**data)
+
+
 class Operations:
+    """
+    Класс для взаимодействия с операциями по аккаунту
+    """
+
     def __init__(self, digiseller) -> None:
         self.digiseller = digiseller
 
-    def get_operations(self,
-                       page: int = 1,
-                       count: int = 10,
-                       currency: Currency | str | None = None,
-                       operation_type: OperationType | str | None = None,
-                       code_filter: CodeFilter | str | None = None,
-                       allow_type: AllowType | str | None = None,
-                       date_start: datetime = datetime(2000, 1, 1, 0, 0, 0).strftime('%Y-%m-%dT%H:%M'),
-                       date_finish: datetime = datetime.now().strftime('%Y-%m-%dT%H:%M')):
+    def list(self,
+             page: int = 1,
+             count: int = 10,
+             currency: Optional[Currency | str] = None,
+             operation_type: Optional[OperationType | str] = None,
+             code_filter: Optional[CodeFilter | str] = None,
+             allow_type: Optional[AllowType | str] = None,
+             date_start: datetime = (datetime.now() - timedelta(weeks=2)).strftime('%Y-%m-%dT%H:%M'),
+             date_finish: datetime = datetime.now().strftime('%Y-%m-%dT%H:%M')) -> List[Operation]:
+        """
+        Получение списка операций по аккаунту
+        https://my.digiseller.com/inside/api_account.asp#digiseller
+
+        :param page: Номер страницы
+        :param count: Количество отображаемых операций (до 200)
+        :param currency: Валюта (Currency/str)
+        :param operation_type: Тип операции (OperationType/str)
+        :param code_filter: Операции, ожидающие проверки уникального кода (CodeFilter/str)
+        :param allow_type: Операции недоступные для вывода (AllowType/str)
+        :param date_start: Дата начала. По умолчанию - 2 недели назад
+        :param date_finish: Дата конца. По умолчанию - текущая дата и время
+
+        :return: Список объектов `Operation`, представляющих информацию об операции
+        """
         resp = self.digiseller.request(
             'get', 'sellers/account/receipts',
             page=page,
@@ -59,4 +97,50 @@ class Operations:
         )
         data = resp.json()
         items = data['content']['items']
-        print(items)
+        operations = [Operation.from_dict(item) for item in items]
+
+        return operations
+
+    def external_aggregators(self,
+                             page: int = 1,
+                             count: int = 10,
+                             order: str = 'Date DESC',
+                             allow_type: Optional[AllowType | str] = None,
+                             aggregator: Optional[str] = 'freekassa'):
+        """
+        Получение списка операций проведенных через внешних агрегаторов
+        https://my.digiseller.com/inside/api_account.asp#external
+
+        :param page: Номер страницы
+        :param count: Количество операций на одной странице
+        :param order: Сортировка
+        :param allow_type: Операции недоступные для вывода (AllowType/str)
+        :param aggregator: Агрегатор (платежная система). Например: 'yandex' - ЮMoney, 'enot' - Enot.io
+
+        :return: Список объектов `Operation`, представляющих информацию об операции
+        """
+        resp = self.digiseller.request(
+            'get', 'sellers/account/receipts/external',
+            page=page,
+            count=count,
+            order=order,
+            code=allow_type,
+            aggregator=aggregator
+        )
+        data = resp.json()
+        items = data['content']['items']
+        operations = [Operation.from_dict(item) for item in items]
+
+        return operations
+
+    def get_balance(self):
+        """
+        Получение баланса личного счета
+        https://my.digiseller.com/inside/api_account.asp#view_balance
+        """
+        resp = self.digiseller.request('get', 'sellers/account/balance/info')
+
+        data = resp.json()
+        balances = data['content']
+
+        return balances

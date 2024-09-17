@@ -33,5 +33,5 @@ sales_sum = 0
 for sale in latest_sales:
     sales_sum += sale.price_rub  # Имена атрибутов класса Sale соответствуют параметрам возвращаемым с API
 
-print(f'Заработок с последних 10 продаж: {sales_sum} RUB'')
+print(f'Заработок с последних 10 продаж: {sales_sum} RUB')
 ```

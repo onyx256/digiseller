@@ -8,11 +8,11 @@ class Sale:
     https://my.digiseller.com/inside/api_statistics.asp
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<{self.__class__.__name__} {self.__dict__}>'
 
     @classmethod
@@ -87,7 +87,7 @@ class Statistics:
         return sales
 
     def get_sales_as_agent(self,
-                           id_partner: int,
+                           id_partner: Optional[int] = None,
                            product_ids: Optional[List[int]] = None,
                            date_start: datetime = datetime(2000, 1, 1, 0, 0, 0),
                            date_finish: datetime = datetime.now(),
