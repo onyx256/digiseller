@@ -3,6 +3,7 @@
 Неофициальная библиотека - Digiseller API wrapper для Python. Простой и удобный способ взаимодействовать с АПИ сервиса.
 
 [![Загрузки](https://img.shields.io/pypi/dm/digiseller.svg)](https://pypistats.org/packages/digiseller)
+[![CodeFactor](https://www.codefactor.io/repository/github/onyx256/digiseller/badge)](https://www.codefactor.io/repository/github/onyx256/digiseller)
 
 ## Установка
 
