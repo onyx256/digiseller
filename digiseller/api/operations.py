@@ -133,10 +133,12 @@ class Operations:
 
         return operations
 
-    def get_balance(self):
+    def get_balance(self) -> dict:
         """
         Получение баланса личного счета
         https://my.digiseller.com/inside/api_account.asp#view_balance
+
+        :return: Словарь представляющий баланс счета
         """
         resp = self.digiseller.request('get', 'sellers/account/balance/info')
 
