@@ -60,15 +60,15 @@ class Operations:
     def __init__(self, digiseller) -> None:
         self.digiseller = digiseller
 
-    def list(self,
-             page: int = 1,
-             count: int = 10,
-             currency: Optional[Currency | str] = None,
-             operation_type: Optional[OperationType | str] = None,
-             code_filter: Optional[CodeFilter | str] = None,
-             allow_type: Optional[AllowType | str] = None,
-             date_start: datetime = (datetime.now() - timedelta(weeks=2)).strftime('%Y-%m-%dT%H:%M'),
-             date_finish: datetime = datetime.now().strftime('%Y-%m-%dT%H:%M')) -> List[Operation]:
+    def get_all(self,
+                page: int = 1,
+                count: int = 10,
+                currency: Optional[Currency | str] = None,
+                operation_type: Optional[OperationType | str] = None,
+                code_filter: Optional[CodeFilter | str] = None,
+                allow_type: Optional[AllowType | str] = None,
+                date_start: datetime = (datetime.now() - timedelta(weeks=2)).strftime('%Y-%m-%dT%H:%M'),
+                date_finish: datetime = datetime.now().strftime('%Y-%m-%dT%H:%M')) -> List[Operation]:
         """
         Получение списка операций по аккаунту
         https://my.digiseller.com/inside/api_account.asp#digiseller
@@ -84,7 +84,7 @@ class Operations:
 
         :return: Список объектов `Operation`, представляющих информацию об операции
         """
-        resp = self.digiseller.request(
+        resp = self.digiseller.make_request(
             'get', 'sellers/account/receipts',
             page=page,
             count=count,
@@ -119,7 +119,7 @@ class Operations:
 
         :return: Список объектов `Operation`, представляющих информацию об операции
         """
-        resp = self.digiseller.request(
+        resp = self.digiseller.make_request(
             'get', 'sellers/account/receipts/external',
             page=page,
             count=count,
@@ -140,7 +140,7 @@ class Operations:
 
         :return: Словарь представляющий баланс счета
         """
-        resp = self.digiseller.request('get', 'sellers/account/balance/info')
+        resp = self.digiseller.make_request('get', 'sellers/account/balance/info')
 
         data = resp.json()
         balances = data['content']

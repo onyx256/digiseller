@@ -4,7 +4,7 @@ from typing import List, Optional
 
 class Sale:
     """
-    Представляет информацию о продаже.
+    Представляет информацию о продаже
     https://my.digiseller.com/inside/api_statistics.asp
     """
 
@@ -38,7 +38,7 @@ class Statistics:
 
         :return: Список объектов `Sale`, представляющих информацию о продаже
         """
-        resp = self.digiseller.request(
+        resp = self.digiseller.make_request(
             'get', 'seller-last-sales',
             seller_id=self.digiseller.seller_id,
             group=group,
@@ -71,7 +71,7 @@ class Statistics:
 
         :return: Список объектов `Sale`, представляющих информацию о продаже
         """
-        resp = self.digiseller.request(
+        resp = self.digiseller.make_request(
             'post', 'seller-sells/v2',
             product_ids=product_ids,
             date_start=date_start.strftime('%Y-%m-%d %H:%M:%S'),
@@ -96,7 +96,7 @@ class Statistics:
                            rows: int = 10
                            ):
         """
-            Получение статистики по продажам в качестве агента.
+            Получение статистики по продажам в качестве агента
             https://my.digiseller.com/inside/api_statistics.asp#statistics_agent_sales
 
             :param id_partner: ID партнера
@@ -109,7 +109,7 @@ class Statistics:
 
             :return: Список объектов `Sale`, представляющих информацию о продаже
         """
-        resp = self.digiseller.request(
+        resp = self.digiseller.make_request(
             'post', 'agent-sales/v2',
             id_partner=id_partner,
             product_ids=product_ids,

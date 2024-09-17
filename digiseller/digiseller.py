@@ -35,6 +35,7 @@ class Digiseller:
 
         self.operations: api.Operations = api.Operations(self)
         self.statistics: api.Statistics = api.Statistics(self)
+        self.products: api.Products = api.Products(self)
 
     def __get_and_set_token(self) -> str:
         """
@@ -53,10 +54,10 @@ class Digiseller:
         if self.token is None or current_time >= self.token_expiration - 30:  # На всякий -30 сек от времени жизни токена
             self.__get_and_set_token()
 
-    def request(self, method: str, url_path: str, **options) -> requests.Response:
+    def make_request(self, method: str, endpoint: str, **options) -> requests.Response:
         self.__refresh_token_if_needed()
 
-        url = self.BASE_URL + url_path
+        url = self.BASE_URL + endpoint
 
         params = {}
         json_data = {}
