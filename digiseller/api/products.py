@@ -1,5 +1,7 @@
 from typing import Optional, List
 
+from digiseller.api import ApiCategoryBase
+
 
 class Category:
     """
@@ -47,13 +49,13 @@ class Product:
         return cls(**data)
 
 
-class Products:
+class Products(ApiCategoryBase):
     """
     Класс для взаимодействия с товарами и категориями
     """
 
     def __init__(self, digiseller) -> None:
-        self.digiseller = digiseller
+        super().__init__(digiseller)
 
     def get_categories(self,
                        seller_id: Optional[int] = None,

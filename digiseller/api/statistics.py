@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List, Optional
 
+from digiseller.api import ApiCategoryBase
+
 
 class Sale:
     """
@@ -20,13 +22,13 @@ class Sale:
         return cls(**data)
 
 
-class Statistics:
+class Statistics(ApiCategoryBase):
     """
     Класс для взаимодействия со статистикой продаж
     """
 
     def __init__(self, digiseller) -> None:
-        self.digiseller = digiseller
+        super().__init__(digiseller)
 
     def get_latest_sales(self, group: bool = True, top: int = 1000) -> List[Sale]:
         """

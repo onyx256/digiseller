@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Optional, List
 
+from digiseller.api import ApiCategoryBase
+
 
 class Currency(Enum):
     WMR = 'WMR'
@@ -52,13 +54,13 @@ class Operation:
         return cls(**data)
 
 
-class Operations:
+class Operations(ApiCategoryBase):
     """
     Класс для взаимодействия с операциями по аккаунту
     """
 
     def __init__(self, digiseller) -> None:
-        self.digiseller = digiseller
+        super().__init__(digiseller)
 
     def get_all(self,
                 page: int = 1,
