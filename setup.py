@@ -8,7 +8,7 @@ def readme() -> str:
 
 setup(
     name='digiseller',
-    version='0.0.5',
+    version='0.0.6',
     author='slava256',
     author_email='sv2021e@gmail.com',
     description='Digiseller API wrapper',
