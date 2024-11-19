@@ -89,7 +89,7 @@ class Statistics(ApiCategoryBase):
         return sales
 
     def get_sales_as_agent(self,
-                           id_partner: Optional[int] = None,
+                           partner_id: Optional[int] = None,
                            product_ids: Optional[List[int]] = None,
                            date_start: datetime = datetime(2000, 1, 1, 0, 0, 0),
                            date_finish: datetime = datetime.now(),
@@ -101,7 +101,7 @@ class Statistics(ApiCategoryBase):
             Получение статистики по продажам в качестве агента
             https://my.digiseller.com/inside/api_statistics.asp#statistics_agent_sales
 
-            :param id_partner: ID партнера
+            :param partner_id: ID партнера
             :param product_ids: Список ID товаров, по которым нужно получить статистику. Если не указано, то будет возвращена статистика по всем товарам.
             :param date_start: Дата начала. По умолчанию - 2000 год (чтобы получить все продажи)
             :param date_finish: Дата конца. По умолчанию - текущая дата и время
@@ -113,7 +113,7 @@ class Statistics(ApiCategoryBase):
         """
         resp = self.digiseller.make_request(
             'post', 'agent-sales/v2',
-            id_partner=id_partner,
+            id_partner=partner_id,
             product_ids=product_ids,
             date_start=date_start.strftime('%Y-%m-%d %H:%M:%S'),
             date_finish=date_finish.strftime('%Y-%m-%d %H:%M:%S'),

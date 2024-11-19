@@ -1,3 +1,4 @@
+import logging
 import time
 
 import requests
@@ -20,7 +21,6 @@ class Digiseller:
         :param seller_id: Идентификатор продавца (https://my.digiseller.com/inside/my_info.asp)
         :param api_key: API ключ для аутентификации (https://my.digiseller.com/inside/api_keys.asp)
         """
-
         validate_param(seller_id, (str, int), 'seller_id')
         validate_param(api_key, str, 'api_key')
 
@@ -36,6 +36,7 @@ class Digiseller:
         self.operations: api.Operations = api.Operations(self)
         self.statistics: api.Statistics = api.Statistics(self)
         self.products: api.Products = api.Products(self)
+        self.dialogs: api.Dialogs = api.Dialogs(self)
 
     def __get_and_set_token(self) -> str:
         """
@@ -44,6 +45,7 @@ class Digiseller:
         token, token_expiration = api.general.get_and_set_token(self)
         self.token = token
         self.token_expiration = token_expiration
+
         return token
 
     def __refresh_token_if_needed(self) -> None:
@@ -54,7 +56,7 @@ class Digiseller:
         if self.token is None or current_time >= self.token_expiration - 30:  # На всякий -30 сек от времени жизни токена
             self.__get_and_set_token()
 
-    def make_request(self, method: str, endpoint: str, **options) -> requests.Response:
+    def make_request(self, method: str, endpoint: str, use_json: bool = True, raise_for_status: bool = True, **options) -> requests.Response:
         self.__refresh_token_if_needed()
 
         url = self.BASE_URL + endpoint
@@ -63,7 +65,7 @@ class Digiseller:
         json_data = {}
 
         options = {k: v for k, v in options.items() if v is not None}  # Убираем все параметры None
-        if method.upper() in ['GET']:
+        if method.upper() in ['GET'] or not use_json:
             options['token'] = self.token
             params = options
         elif method.upper() in ['POST']:
@@ -76,6 +78,8 @@ class Digiseller:
             params=params,
             json=json_data,
         )
-        resp.raise_for_status()
+
+        if raise_for_status:
+            resp.raise_for_status()
 
         return resp
